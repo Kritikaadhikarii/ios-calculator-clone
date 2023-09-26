@@ -1,79 +1,78 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-  let display = document.getElementById("display");
+document.addEventListener('DOMContentLoaded', function () {
   let currentInput = "";
   let operator = "";
-  let firstOperand = "";
-  let secondOperand = "";
+  let firstInput = "";
 
-  const updateDisplay = () => {
-      display.textContent = currentInput;
-  };
+  // Get display element
+  const display = document.getElementById('display');
 
-  const handleNumberClick = (number) => {
-      currentInput += number;
-      updateDisplay();
-  };
+  // Update display
+  function updateDisplay(value) {
+      display.textContent = value;
+  }
 
-  const handleOperatorClick = (op) => {
-      if (!firstOperand) {
-          firstOperand = currentInput;
-          currentInput = "";
-          operator = op;
-      }
-  };
+  // Handle number input
+  document.querySelectorAll('.number').forEach(button => {
+      button.addEventListener('click', function (e) {
+          currentInput += e.target.textContent;
+          updateDisplay(currentInput);
+      });
+  });
 
-  const calculate = () => {
-    secondOperand = currentInput;
-    let result = 0;
-    switch (operator) {
-      case '+':
-        result = parseFloat(firstOperand) + parseFloat(secondOperand);
-        break;
-      case '−':
-        result = parseFloat(firstOperand) - parseFloat(secondOperand);
-        break;
-      case '×':
-        result = parseFloat(firstOperand) * parseFloat(secondOperand);
-        break;
-      case '÷':
-        if (secondOperand !== "0") {
-          result = parseFloat(firstOperand) / parseFloat(secondOperand);
-        } else {
-          alert("Cannot divide by zero");
-          clearAll();
-          return;
-        }
-        break;
-      default:
-        return;
-    }
-    display.textContent = result; // This line updates the display immediately.
-    firstOperand = result.toString();
-    currentInput = "";
-  };
-  
+  // Handle operator input
+  document.querySelectorAll('.operator').forEach(button => {
+      button.addEventListener('click', function (e) {
+          if (firstInput === "") {
+              firstInput = currentInput;
+              currentInput = "";
+              operator = e.target.textContent;
+          }
+      });
+  });
 
-  const clearAll = () => {
+  // Handle AC (All Clear)
+  document.getElementById('clear').addEventListener('click', function () {
       currentInput = "";
-      firstOperand = "";
-      secondOperand = "";
+      firstInput = "";
       operator = "";
-      updateDisplay();
-  };
-
-  document.querySelectorAll(".number").forEach((button) => {
-      button.addEventListener("click", (e) => handleNumberClick(e.target.textContent));
+      updateDisplay('0');
   });
 
-  document.querySelectorAll(".operator").forEach((button) => {
-      button.addEventListener("click", (e) => handleOperatorClick(e.target.textContent));
-  });
+  // Handle calculation (=)
+  document.querySelectorAll('.operator').forEach(button => {
+      if (button.textContent === "=") {
+          button.addEventListener('click', function () {
+              if (firstInput && currentInput && operator) {
+                  let result = 0;
+                  const num1 = parseFloat(firstInput);
+                  const num2 = parseFloat(currentInput);
 
-  document.getElementById("clear").addEventListener("click", clearAll);
-  document.getElementById("percent").addEventListener("click", () => {
-      currentInput = (parseFloat(currentInput) / 100).toString();
-      updateDisplay();
+                  switch (operator) {
+                      case '+':
+                          result = num1 + num2;
+                          break;
+                      case '−':
+                          result = num1 - num2;
+                          break;
+                      case '×':
+                          result = num1 * num2;
+                          break;
+                      case '÷':
+                          if (num2 !== 0) {
+                              result = num1 / num2;
+                          } else {
+                              result = 'Error';
+                          }
+                          break;
+                      default:
+                          break;
+                  }
+
+                  updateDisplay(result);
+                  firstInput = result;
+                  currentInput = "";
+              }
+          });
+      }
   });
-  
-  document.getElementById("=").addEventListener("click", calculate);
 });

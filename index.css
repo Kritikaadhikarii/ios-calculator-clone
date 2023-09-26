@@ -179,4 +179,12 @@
     }
   
   }
-    
+
+  .history-button {
+    position: absolute;
+    top: 5;
+    left: 90;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
