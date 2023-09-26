@@ -28,11 +28,12 @@
     flex-direction: column;
     gap: 1rem;
     font-family: Helvetica, sans-serif;
-    background: rgb(223,223,223);
-    background: linear-gradient(rgba(223,223,223,1) 35%, rgba(158,158,158,1) 100%);
+    background: #737373;
   }
   
-  
+  p{
+    color:#ffffff;
+  }
   /* CLASS SELECTORS */
   
   
